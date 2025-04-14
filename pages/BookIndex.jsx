@@ -42,7 +42,6 @@ export function BookIndex() {
     }
 
     const loadingClass = isLoading ? 'loading' : ''
-    console.log(books)
     return(
         <section className="book-index">
             {(selectedBookId &&
