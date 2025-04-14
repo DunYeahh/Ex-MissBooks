@@ -9,7 +9,7 @@
 
 .book-filter form {
     display: grid;
-    grid-template-columns: 100px 200px;
+    grid-template-columns: 120px 220px;
     gap: .5em;
 }
 

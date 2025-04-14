@@ -10,7 +10,8 @@ export const bookService = {
     remove,
     save,
     getEmptyBook,
-    getDefaultFilter
+    getDefaultFilter,
+    getCategories
 }
 
 // const gBooks = [
@@ -40,8 +41,18 @@ function query(filterBy = {}) {
                 const regExp = new RegExp(filterBy.txt, 'i')
                 books = books.filter(book => regExp.test(book.title))
             }
+            if (filterBy.authors) {
+                const regExp = new RegExp(filterBy.authors, 'i')
+                books = books.filter(book => regExp.test(book.authors.join(', ')))
+            }
             if (filterBy.minPrice) {
                 books = books.filter(book => book.listPrice.amount >= filterBy.minPrice)
+            }
+            if (filterBy.publishedDate) {
+                books = books.filter(book => book.publishedDate >= filterBy.publishedDate)
+            }
+            if (filterBy.categories) {
+                books = books.filter(book => book.categories.includes(filterBy.categories))
             }
             return books
         })
@@ -78,7 +89,7 @@ function getEmptyBook(title = '', amount = '') {
 }
 
 function getDefaultFilter() {
-    return { txt: '', minPrice: '' }
+    return { txt: '', minPrice: '', authors: '', publishedDate: 1950, categories: ''}
 }
 
 function _createBooks() {
@@ -90,7 +101,6 @@ function _createBooks() {
         //     _createBook('bible', 50),
         //     _createBook('the lord of the rings', 150)
         // ]
-        const ctgs = ['Love', 'Fiction', 'Poetry', 'Computers', 'Religion'] 
         const books = [] 
         for (let i = 0; i < 20; i++) { 
             const book = { 
@@ -103,7 +113,7 @@ function _createBooks() {
                 publishedDate: utilService.getRandomIntInclusive(1950, 2024), 
                 description: utilService.makeLorem(20), 
                 pageCount: utilService.getRandomIntInclusive(20, 600), 
-                categories: [ctgs[utilService.getRandomIntInclusive(0, ctgs.length - 1)]], 
+                categories: [getCategories()[utilService.getRandomIntInclusive(0, getCategories().length - 1)]], 
                 thumbnail: `../assets/BooksImages/${i+1}.jpg`, 
                 language: "en", 
                 listPrice: { 
@@ -122,4 +132,9 @@ function _createBook(title, amount = 250) {
     const book = getEmptyBook(title, amount)
     book.id = makeId()
     return book
+}
+
+function getCategories() {
+    return ['Love', 'Fiction', 'Poetry', 'Computers', 'Religion'] 
+
 }

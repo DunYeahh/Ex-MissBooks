@@ -52,12 +52,11 @@ export function BookDetails({ bookId, onBack }) {
             <h2>{subtitle}</h2>
             <p>{authors},{publishedDate}. <span>{bookAge()} {typeOfRead()}</span></p>
             <div className="img-container">
+            <h2 className={priceColor()}>{listPrice.amount}{listPrice.currencyCode}</h2>
             <img src={thumbnail} alt="Book Image"/>
             {listPrice.isOnSale ? <p className="on-sale">on sale!</p> : ''}
             </div>
-            {/* <p>{description}</p> */}
             <LongTxt txt={description} length={100}/>
-            <h2 className={priceColor()}>{listPrice.amount}{listPrice.currencyCode}</h2>
             <button onClick={onBack}>Back</button>
         </section>
     )

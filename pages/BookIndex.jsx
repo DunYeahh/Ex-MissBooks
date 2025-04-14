@@ -12,6 +12,8 @@ export function BookIndex() {
     const [isLoading, setIsLoading] = useState(false)
     const [selectedBookId, setSelectedBookId] = useState(null)
 
+    const categories = bookService.getCategories()
+
     useEffect (() => {
         loadBooks()
     }, [filterBy])
@@ -52,7 +54,10 @@ export function BookIndex() {
             )}
         {!selectedBookId && (books ?
         <React.Fragment>
-            <BookFilter onSetFilterBy={onSetFilterBy} filterBy={filterBy}/>
+            <BookFilter 
+            onSetFilterBy={onSetFilterBy}
+            categories={categories}
+            filterBy={filterBy}/>
             <BookList 
             books={books}
             loadingClass={loadingClass}
