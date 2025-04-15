@@ -1,8 +1,9 @@
 import { bookService } from "../services/book.service.js"
 import { LongTxt } from "../cmps/LongTxt.jsx"
+import { AddReview } from "../cmps/AddReview.jsx"
 
 const { useState, useEffect } = React
-const { useParams, useNavigate, Link } = ReactRouterDOM
+const { useParams, useNavigate, Link, Outlet } = ReactRouterDOM
 
 
 export function BookDetails() {
@@ -59,9 +60,33 @@ export function BookDetails() {
         return ''
     }
 
+    function saveReview(review) {
+        bookService.addReview(params.bookId, review)
+            .then(() => {
+                loadBook()
+                showSuccessMsg(`Your Review was submitted successfully!`)
+            })
+            .catch(err => {
+                console.log('Cannot save review!', err)
+                showErrorMsg('Cannot save review!')
+            })
+    }
+
+    function removeReview(reviewId) {
+        bookService.removeReview(params.bookId, reviewId)
+        .then(() => {
+            loadBook()
+            showSuccessMsg(`Your Review was deleted successfully!`)
+        })
+        .catch(err => {
+            console.log('Cannot delete review!', err)
+            showErrorMsg('Cannot delete review!')
+        })
+    }
+
     if (isLoading) return <div className="loader">Loading...</div>
 
-    const {title, subtitle, authors, publishedDate, description, thumbnail, listPrice} = book
+    const { title, subtitle, authors, publishedDate, description, thumbnail, listPrice, reviews} = book
     return (
         <section className="book-details container">
             <h1>{title}</h1>
@@ -73,6 +98,17 @@ export function BookDetails() {
             {listPrice.isOnSale ? <p className="on-sale">on sale!</p> : ''}
             </div>
             <LongTxt txt={description} length={100}/>
+            {/* <div className="review-link">
+            <Link to={`/book/${params.bookId}/review`}>Add a Review</Link>
+            </div>
+            <section>
+                <Outlet />
+            </section> */}
+            <AddReview 
+            saveReview={saveReview} 
+            reviews={reviews || null}
+            removeReview={removeReview}
+            />
             <button onClick={onBack}>Back</button>
             <section>
                 <button ><Link to={`/book/${book.prevBookId}`}>Prev Book</Link></button>

@@ -11,7 +11,9 @@ export const bookService = {
     save,
     getEmptyBook,
     getDefaultFilter,
-    getCategories
+    getCategories,
+    addReview,
+    removeReview
 }
 
 // const gBooks = [
@@ -149,4 +151,29 @@ function _setNextPrevBookId(book) {
         book.prevBookId = prevBook.id
         return book
     })
+}
+
+function addReview(bookId, review) {
+    review.id = makeId()
+    return get(bookId).then(book => {
+            if (book.reviews) {
+                book.reviews.push(review)
+            } else {
+                book.reviews = [review]
+            }
+            save(book)
+            })
+}
+
+function removeReview(bookId, reviewId) {
+
+    return get(bookId).then(book => {
+        const reviewIdx = book.reviews.findIndex(review => review.id === reviewId)
+        if (reviewIdx !== -1) {
+            book.reviews.splice(reviewIdx, 1)
+            return save(book)
+        } else {
+            return Promise.reject('Review not found')
+        }
+        })   
 }

@@ -9,6 +9,7 @@ import { BookDetails } from "./pages/BookDetails.jsx"
 import { BookEdit } from "./pages/BookEdit.jsx"
 import { NotFound } from "./cmps/NotFound.jsx"
 import { UserMsg } from "./cmps/UserMsg.jsx"
+import { AddReview } from "./cmps/AddReview.jsx"
 
 export function RootCmp() {
 
@@ -23,6 +24,8 @@ export function RootCmp() {
                     <Route path="/about" element={<About />} />
                     <Route path="/book" element={<BookIndex />} />
                     <Route path="/book/:bookId" element={<BookDetails />} />
+                        {/* <Route path="/book/:bookId/review" element={<AddReview />} />
+                    </Route> */}
                     <Route path="/book/edit" element={<BookEdit />} />
                     <Route path="/book/edit/:bookId" element={<BookEdit />} />
                     <Route path="*" element={<NotFound />} />
